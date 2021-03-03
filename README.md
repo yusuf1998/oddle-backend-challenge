@@ -43,8 +43,6 @@ $ ./gradlew bootRun
 ||||
 |Update historical weather data|As an API consumer, I should be able to update an existing weather record|Medium
 ||||
-|Choose Weather provider|As an API consumer, I should be able to know which Weather providers are available and select the suitable one|Low
-||||
 |Able to ensure existing function is working|As an API contributor, I should be able to make sure my contribution won’t break existing function|Low
 
 ## Weather API Provider
