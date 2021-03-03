@@ -18,11 +18,11 @@ Project is created with:
 
 	
 ## Setup
-Prequisites:
+**Prerequisites:**
 
 You need to update the database config to point to your desired database first.
 
-Run:
+**Run:**
 ```
 $ ./gradlew bootRun
 ```
