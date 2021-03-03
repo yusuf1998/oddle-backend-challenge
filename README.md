@@ -1,6 +1,6 @@
 # Oddle Backend Challenge - V2
 
-Welcome to Oddle Challenge
+**Welcome to Oddle Challenge**
 
 ## Table of contents
 * [General info](#general-info)
@@ -69,5 +69,7 @@ https://openweathermap.org/current
 
 ## Submission Steps
 * Fork the repository https://github.com/oddle-developer/oddle-backend-challenge to your machine
+* Duplicate it to private repository on your Github account (https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository)
 * Code. Commit and Push as many times as you want, only the last Pull Request will be graded
-* Create a Pull Request to original repo
+* Create a Pull Request in your private repo and invite us as reviewer
+* Inform us
