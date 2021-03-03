@@ -66,3 +66,8 @@ https://openweathermap.org/current
 * If additional setup is required, please update README.md that explains the steps to get the assignment working.
 * Think about how big the data can become and what to do about it
 * Think about scaling your app. You do not need to implement it now.
+
+## Submission Steps
+* Fork the repository https://github.com/oddle-developer/oddle-backend-challenge to your machine
+* Code. Commit and Push as many times as you want, only the last Pull Request will be graded
+* Create a Pull Request to original repo
