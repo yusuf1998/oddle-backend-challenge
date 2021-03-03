@@ -11,6 +11,6 @@ public class WeatherController {
 
     @GetMapping("")
     public Map<String, Object> getWeathers() {
-        return Collections.EMPTY_MAP;
+        return Collections.singletonMap("message", "Welcome to Oddle Backend Challenge");
     }
 }
