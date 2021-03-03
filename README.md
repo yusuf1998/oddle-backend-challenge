@@ -19,6 +19,7 @@ Project is created with:
 	
 ## Setup
 Prequisites:
+
 You need to update the database config to point to your desired database first.
 
 Run:
