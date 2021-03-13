@@ -21,20 +21,24 @@ public class WthCity implements Serializable {
    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    @Column(name = "id", nullable = true)
+    @Column(name = "id")
     private long id;
-    
+   
     @Column(name = "name", nullable = true)
     @NotEmpty(message="* Please Enter City Name")
     private String name;
 
     @Column(name = "state", nullable = true)
-    @NotEmpty(message="* Please Enter State Name")
     private String state;
 
     @Column(name = "country", nullable = true)
     @NotEmpty(message="* Please Enter Coutry Name")
     private String country;
 
-    
+    @Column(name = "longt", nullable = true)  
+    private Double longt;
+
+    @Column(name = "lat", nullable = true)  
+    private Double lat;
+
 }
