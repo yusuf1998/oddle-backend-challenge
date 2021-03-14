@@ -12,9 +12,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DaoWthWeatherDetails extends JpaRepository<WthWeatherDetails,Long> {
-	WthWeatherDetails findById(long id);    
-	//List<WthWeatherDetails> findByCityIdAndWeatherDtAfterAndWeatherDtBefore(Long cityId, Date endDt, Date fromDt);
+	WthWeatherDetails findById(long id);
 	
+	List<WthWeatherDetails> findByCityId(long cityId);
+
+	List<WthWeatherDetails> findByWeatherBaseId(long weatherBaseId);
 
 	@Query( value= "\n select *                        "
 	             + "\n  from wth_weather_details wtd   "

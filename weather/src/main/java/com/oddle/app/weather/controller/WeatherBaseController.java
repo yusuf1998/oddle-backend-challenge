@@ -22,7 +22,9 @@ import javax.validation.Valid;
 
 import com.oddle.app.weather.exception.ResourceNotFoundException;
 import com.oddle.app.weather.models.WthWeatherBase;
+import com.oddle.app.weather.models.WthWeatherDetails;
 import com.oddle.app.weather.repositories.DaoWthWeatherBase;
+import com.oddle.app.weather.repositories.DaoWthWeatherDetails;
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +32,9 @@ public class WeatherBaseController {
 
     @Autowired
     private DaoWthWeatherBase daoWthWeatherBase;
+
+    @Autowired
+    private DaoWthWeatherDetails daoWthWeatherDetails;
 
     private final Logger logger = LoggerFactory.getLogger(WeatherBaseController.class);
     
@@ -120,8 +125,15 @@ public class WeatherBaseController {
        
         WthWeatherBase wthBase = daoWthWeatherBase.findById(id);
         if(wthBase != null){
+            List<WthWeatherDetails> weatherDetailList = daoWthWeatherDetails.findByWeatherBaseId(id);
+            if(weatherDetailList.size() > 0){  
+                for (WthWeatherDetails row : weatherDetailList) {
+                    WthWeatherDetails wthDetails = daoWthWeatherDetails.findById(row.getId());
+                        wthDetails.setWeatherBaseId(0);
+                    daoWthWeatherDetails.save(wthDetails);
+                }
+            }              
             daoWthWeatherBase.delete(wthBase);
-
             response.put("status"   , HttpStatus.OK);
             response.put("message"  , "Data deleted");
         }else{

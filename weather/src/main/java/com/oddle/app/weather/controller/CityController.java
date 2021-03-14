@@ -22,7 +22,9 @@ import javax.validation.Valid;
 
 import com.oddle.app.weather.exception.ResourceNotFoundException;
 import com.oddle.app.weather.models.WthCity;
+import com.oddle.app.weather.models.WthWeatherDetails;
 import com.oddle.app.weather.repositories.DaoWthCity;
+import com.oddle.app.weather.repositories.DaoWthWeatherDetails;
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +32,9 @@ public class CityController {
 
     @Autowired
     private DaoWthCity daoWthCity;
+
+    @Autowired
+    private DaoWthWeatherDetails daoWthWeatherDetails;
 
     private final Logger logger = LoggerFactory.getLogger(CityController.class);
     
@@ -49,7 +54,6 @@ public class CityController {
             response.put("status"   , HttpStatus.NOT_FOUND);
             response.put("message"  , "Data city not found");
         }
-
         return response;
     }
 
@@ -124,10 +128,15 @@ public class CityController {
        
         WthCity cityBase = daoWthCity.findById(id);
         if(cityBase != null){
-            daoWthCity.delete(cityBase);
-
-            response.put("status"   , HttpStatus.OK);
-            response.put("message"  , "Data deleted");
+            List<WthWeatherDetails> weatherDetailList = daoWthWeatherDetails.findByCityId(id);
+            if(weatherDetailList.size() > 0){                
+                response.put("status"   , HttpStatus.NOT_ACCEPTABLE);
+                response.put("message"  , "Cannot delete city that written in weather details!");
+            }else{
+                daoWthCity.delete(cityBase);
+                response.put("status"   , HttpStatus.OK);
+                response.put("message"  , "Data deleted");
+            }
         }else{
             response.put("status"   , HttpStatus.NOT_FOUND);
             response.put("message"  , "Data not found");
