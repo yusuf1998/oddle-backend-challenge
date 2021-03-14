@@ -31,11 +31,6 @@ public class WthWeatherDetails implements Serializable {
     @Column(name = "weather_base_id")  
     private long weatherBaseId;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "weather_base_id", insertable = false, updatable = false)
-	// @Fetch(FetchMode.JOIN)
-	// private WthWeatherBase weatherBase;
-
     @Column(name = "temperature", nullable = true)  
     private double temperature;
 

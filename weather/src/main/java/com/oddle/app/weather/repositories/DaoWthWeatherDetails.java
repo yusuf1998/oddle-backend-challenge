@@ -1,6 +1,6 @@
 package com.oddle.app.weather.repositories;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.oddle.app.weather.models.WthWeatherDetails;
@@ -25,7 +25,7 @@ public interface DaoWthWeatherDetails extends JpaRepository<WthWeatherDetails,Lo
 	, nativeQuery = true)
 
 List<WthWeatherDetails> findByCityIdAndRangeDt(@Param("cityId") long cityId
-											 , @Param("fromDt") Date fromDt
-											 , @Param("endDt")  Date endDt);
+											 , @Param("fromDt") LocalDate fromDt
+											 , @Param("endDt")  LocalDate endDt);
 
 }
