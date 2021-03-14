@@ -26,8 +26,9 @@ import com.oddle.app.weather.models.WthWeatherDetails;
 import com.oddle.app.weather.repositories.DaoWthCity;
 import com.oddle.app.weather.repositories.DaoWthWeatherDetails;
 
-@RestController
-@RequestMapping("/api")
+@RestController   
+// this controller running on api map url request //
+@RequestMapping("/api") 
 public class CityController {
 
     @Autowired
@@ -38,6 +39,8 @@ public class CityController {
 
     private final Logger logger = LoggerFactory.getLogger(CityController.class);
     
+    // catch request for GET method //
+    // http://localhost:8080/api/cities // 
     @GetMapping("/cities")
     public Map<String, Object> getCities() {
 
@@ -57,8 +60,12 @@ public class CityController {
         return response;
     }
 
+    
+    //   catch request for POST method    //
+    //   http://localhost:8080/api/cities    //
     @PostMapping("/cities")
     public Map<String, Object> saveCity(@Valid @RequestBody WthCity wthCity) throws ResourceNotFoundException {
+        // Create response output //
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status"   , HttpStatus.OK);
@@ -70,21 +77,29 @@ public class CityController {
         response.put("message"  , "Data city inserted");
         response.put("content"  , cityBase            );
         
+        // Call response output as return to consumer //
         return response;
     }
 
+    //   catch request for GET method  pathVariable id    //
+    //  ex http://localhost:8080/api/cities/1 => 1 is {id}    //
     @GetMapping("/cities/{id}")
     public Map<String, Object> getCityById(@PathVariable(value = "id") long id) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("timestamp", LocalDateTime.now());
         
+            // find city data by id //
             WthCity wthCity = daoWthCity.findById(id);
 
+            // check if data not nul //
             if(wthCity != null){
+            // then set response value and set content get from city data //
                 response.put("status"   , HttpStatus.OK      );       
                 response.put("message"  , "Data city found"  );
                 response.put("content"  , wthCity            );
             }else{
+             // if null //   
+            // then set response value message is not found //
                 response.put("status"   , HttpStatus.NOT_FOUND);
                 response.put("message"  , "Data city not found"  );
             }           
@@ -92,47 +107,72 @@ public class CityController {
         return response;
     }
 
+
+    //   catch request for PUT/UPDATE method     //
+    //   request using path and requestBody     //
+    //  ex http://localhost:8080/api/cities/1 => 1 is {id}    //
     @PutMapping("/cities/{id}")
     public Map<String, Object> updateCity(@PathVariable(value = "id") long id,@Valid @RequestBody WthCity wthCity) throws ResourceNotFoundException {
  
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("timestamp", LocalDateTime.now());
 
+        // find city data by id //
         WthCity cityBase = daoWthCity.findById(id);
 
+        // check if data not nul //
         if(cityBase != null){
+            
+        // then set response value and set content get from city data //
             cityBase.setName(wthCity.getName());
             cityBase.setCountry(wthCity.getCountry());
             cityBase.setState(wthCity.getState());
             cityBase.setLongt(wthCity.getLongt());
             cityBase.setLat(wthCity.getLat());
-    
+
+         // update city data //
             daoWthCity.save(cityBase);
 
             response.put("status"   , HttpStatus.OK      );    
             response.put("message"  , "Data updated"     );
             response.put("content"  ,  cityBase          );
         }else{
+            // if null //   
+            // then set response value message is not found //
             response.put("status"   , HttpStatus.NOT_FOUND      );    
             response.put("message"  , "Data not found"   );
         }
 
+        // send response to consumer //
         return response;
     }
 
+
+     //   catch request for DELETE method     //
+     //   request using pathVariable          //
+    //  ex http://localhost:8080/api/cities/1 => 1 is {id}    //
     @DeleteMapping("/cities/{id}")
     public Map<String, Object> deleteCity(@PathVariable(value = "id") long id) throws ResourceNotFoundException {
-               
+        // Create response output //         
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("timestamp", LocalDateTime.now());
        
+        // find city data by id //
         WthCity cityBase = daoWthCity.findById(id);
+
+        // check if data not nul //
         if(cityBase != null){
+        // get weatherDetails by city id  //
             List<WthWeatherDetails> weatherDetailList = daoWthWeatherDetails.findByCityId(id);
-            if(weatherDetailList.size() > 0){                
+        // check if city data included in weather details table //
+            if(weatherDetailList.size() > 0){
+                // if city data count > 0 in weather details //
+                // set response to ignore delete process //                
                 response.put("status"   , HttpStatus.NOT_ACCEPTABLE);
                 response.put("message"  , "Cannot delete city that written in weather details!");
             }else{
+                // if city data count < 0 in weather details //
+                // delete city data by id //
                 daoWthCity.delete(cityBase);
                 response.put("status"   , HttpStatus.OK);
                 response.put("message"  , "Data deleted");
