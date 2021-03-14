@@ -1,3 +1,6 @@
+**Postman API Documentation**
+https://documenter.getpostman.com/view/6387114/Tz5qad23
+
 # Oddle Backend Challenge - V2
 
 **Welcome to Oddle Challenge**
