@@ -21,17 +21,13 @@ import javax.validation.Valid;
 import com.oddle.app.weather.exception.ResourceNotFoundException;
 import com.oddle.app.weather.models.WthCity;
 import com.oddle.app.weather.repositories.DaoWthCity;
-import com.oddle.app.weather.repositories.DaoWthCoordinate;
 
 @RestController
-@RequestMapping("/api/ct")
+@RequestMapping("/api")
 public class CityController {
 
     @Autowired
     private DaoWthCity daoWthCity;
-
-    @Autowired
-    private DaoWthCoordinate daoWthCoordinate;
 
     private final Logger logger = LoggerFactory.getLogger(CityController.class);
     

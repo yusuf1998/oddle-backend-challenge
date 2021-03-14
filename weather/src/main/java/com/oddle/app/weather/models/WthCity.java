@@ -1,7 +1,6 @@
 package com.oddle.app.weather.models;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,6 +38,5 @@ public class WthCity implements Serializable {
     private Double longt;
 
     @Column(name = "lat", nullable = true)  
-    private Double lat;
-
+    private Double lat;    
 }
