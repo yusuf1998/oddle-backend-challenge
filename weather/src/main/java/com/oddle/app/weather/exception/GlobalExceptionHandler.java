@@ -25,7 +25,7 @@ public class GlobalExceptionHandler extends ResponseStatusExceptionHandler {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "City not found");
+        body.put("message", "not found");
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
