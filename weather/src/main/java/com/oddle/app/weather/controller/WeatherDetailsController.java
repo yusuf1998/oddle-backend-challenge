@@ -11,19 +11,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import antlr.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.oddle.app.weather.controller.io_models.OpenWeatherOutput;
 import com.oddle.app.weather.controller.io_models.WeatherInput;
 import com.oddle.app.weather.controller.io_models.WeatherOutput;
 import com.oddle.app.weather.exception.ResourceNotFoundException;
@@ -45,6 +51,7 @@ public class WeatherDetailsController {
     @Autowired
     private DaoWthWeatherBase daoWthWeatherBase;
 
+    private final String apiKey = "6415ef2c3620496afb77cef8539e0e8d";
     private final Logger logger = LoggerFactory.getLogger(WeatherDetailsController.class);
 
     @GetMapping("")
@@ -52,8 +59,42 @@ public class WeatherDetailsController {
         return Collections.singletonMap("message", "Welcome to Oddle Backend Challenge");
     } 
 
+    @GetMapping("/weathers")
+    public Map<String, Object> getWeather(@RequestParam(value = "city") String cityName) throws ResourceNotFoundException {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("timestamp", LocalDateTime.now());
+
+        RestTemplate restTemplate = new RestTemplate();
+        StringBuilder sb = new StringBuilder();
+
+        if(cityName.isEmpty()){
+            response.put("status"   , HttpStatus.NOT_ACCEPTABLE);
+            response.put("message"  , "Please input city"); 
+        }else{
+            sb.setLength(0);
+            sb.append("https://api.openweathermap.org/data/2.5/weather?q=");
+            sb.append(cityName);
+            sb.append("&appid=");
+            sb.append(apiKey);
+            try {
+                OpenWeatherOutput weatherRsp = restTemplate.getForObject(sb.toString(), OpenWeatherOutput.class);
+                response.put("status"   , HttpStatus.OK);
+                response.put("message"  , "Weather data found");
+                response.put("content"  , weatherRsp);
+
+            } catch(Exception e) {
+                response.put("status", HttpStatus.NOT_FOUND);
+                response.put("message"  , "Weather data not found");
+
+            }
+        }        
+    	
+    	return response;
+    }
+
     @GetMapping("/weathers/today/{cityId}")
-    public Map<String, Object> getTodayWeatherByCity(@PathVariable(value = "cityId") long cityId) {
+    public Map<String, Object> getTodayWeatherByCity(@PathVariable(value = "cityId") long cityId) throws ResourceNotFoundException {
         Map<String, Object> response = new LinkedHashMap<>();
 
         List<WeatherOutput> output = new ArrayList<>();
